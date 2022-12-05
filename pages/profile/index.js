@@ -1,8 +1,24 @@
+import axios from "axios"
 import Link from "next/link"
+import { useState } from "react"
 import Footer from "../../components/footer"
 import Navbar1 from "../../components/navbar"
 
 const Profile = () => {
+
+    const [data, setData] = useState('')
+    const getDataUser = async() =>{
+        try {
+            const result = await axios.get('http://localhost:7500/user')
+            setData(result.data.data)
+            // console.log(data);   
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+    getDataUser()
+    console.log(data);
+
   return (
     <div>
         <Navbar1 />

@@ -6,28 +6,26 @@ import Navbar1 from "../../components/navbar"
 
 const Profile = () => {
 
-    const [data, setData] = useState('')
-    const getDataUser = async() =>{
-        try {
-            const result = await axios.get('http://localhost:7500/user')
-            setData(result.data.data)
-            // console.log(data);   
-        } catch (error) {
-            console.log('error', error);
-        }
-    }
-    getDataUser()
+    const data = {
+        token: localStorage.getItem('token'),
+        name: localStorage.getItem('name'),
+        photo: localStorage.getItem('photo')
+      }
     console.log(data);
 
   return (
     <div>
         <Navbar1 />
+        {data ? 
         <div className="container grid mt-44 mx-auto mb-36">
             <div className="bio w-44 h-44 rounded-full overflow-hidden mx-auto">
-                <img src="/iconprofile.png" alt="icon" className="w-44 h-44" />
+                <img src={data.photo} alt="icon" className="w-44 h-44" />
             </div>
-            <p className="text-3xl font-semibold text-center mt-10">Ujang Adolf</p>
+            <p className="text-3xl font-semibold text-center mt-10">{data.name}</p>
         </div>
+        :
+        <p>Is Loading...</p>
+        }
         <div className="container mx-auto">
             <div className="flex">
                 <Link href='/'><p className="text-xl text-gray-600 font-semibold mr-8">My Recipe</p></Link>

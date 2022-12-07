@@ -1,31 +1,43 @@
 import axios from "axios"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Footer from "../../components/footer"
 import Navbar1 from "../../components/navbar"
+import { useRouter } from "next/router"
 
 const Profile = () => {
 
-    const data = {
-        token: localStorage.getItem('token'),
-        name: localStorage.getItem('name'),
-        photo: localStorage.getItem('photo')
-      }
-    console.log(data);
+    const token = localStorage.getItem('token')
+    const [data, setData] = useState({})
 
+    useEffect(()=>{
+        const getProfile = async () =>{
+            try {         
+                const result = await axios({
+                  method: 'GET',
+                  url: 'https://strange-red-gaiters.cyclic.app/user/profile',
+                  headers: {
+                    'Authorization' : `Bearer ${token}`
+                  }
+                })
+                setData(result.data.data)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getProfile()
+        }, [])
+ 
+    
   return (
-    <div>
+      <div>
         <Navbar1 />
-        {data ? 
         <div className="container grid mt-44 mx-auto mb-36">
             <div className="bio w-44 h-44 rounded-full overflow-hidden mx-auto">
                 <img src={data.photo} alt="icon" className="w-44 h-44" />
             </div>
             <p className="text-3xl font-semibold text-center mt-10">{data.name}</p>
         </div>
-        :
-        <p>Is Loading...</p>
-        }
         <div className="container mx-auto">
             <div className="flex">
                 <Link href='/'><p className="text-xl text-gray-600 font-semibold mr-8">My Recipe</p></Link>

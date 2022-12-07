@@ -2,6 +2,9 @@ import Footer from "../components/footer"
 import Navbar1 from "../components/navbar"
 
 const LandingPage = () => {
+
+  
+
   return (
     <div className="wrapper w-full h-screen">
       <Navbar1 />

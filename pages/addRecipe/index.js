@@ -5,10 +5,11 @@ import Navbar1 from "../../components/navbar"
 
 const AddRecipe = () => {
 
-    const idUser = localStorage.getItem('id')
+    const token = localStorage.getItem('token')
+    const id = localStorage.getItem('id')
 
     const [input, setInput] = useState({
-        userID: idUser,
+        userID: id,
         tittle: '',
         ingredients: ''
     })
@@ -26,7 +27,7 @@ const AddRecipe = () => {
     const handlePhoto = (e) => {
         const handle = e.target.files[0]
         setPhoto(handle)
-        // console.log(handle);
+        console.log(e.target.files[0]);
     }
 
     const handleUpload = async (e) => {
@@ -37,14 +38,21 @@ const AddRecipe = () => {
         formData.append('ingredients', input.ingredients)
         formData.append('photo', photo.name)
         try {
-            const result = await axios.post('https://strange-red-gaiters.cyclic.app/recipe', formData)
+            const result = await axios({
+                method: 'POST',
+                url: 'https://strange-red-gaiters.cyclic.app/recipe',
+                data: formData,
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
             console.log(result);
         } catch (error) {
             console.log('failed', error);
         }
     }
-    console.log('input', input)
-    console.log('photo', photo)
+    // console.log('input', input)
+    // console.log('photo', photo)
 
   return (
     <div>

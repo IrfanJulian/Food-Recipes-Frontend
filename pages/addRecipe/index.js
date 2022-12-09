@@ -2,14 +2,16 @@ import axios from "axios"
 import { useState } from "react"
 import Footer from "../../components/footer"
 import Navbar1 from "../../components/navbar"
+import { useRouter } from "next/router"
 
 const AddRecipe = () => {
 
     const token = localStorage.getItem('token')
-    const id = localStorage.getItem('id')
-
+    const userID = localStorage.getItem('id')
+    // console.log(id);
+    
     const [input, setInput] = useState({
-        userID: id,
+        userID: userID,
         tittle: '',
         ingredients: ''
     })
@@ -27,7 +29,7 @@ const AddRecipe = () => {
     const handlePhoto = (e) => {
         const handle = e.target.files[0]
         setPhoto(handle)
-        console.log(e.target.files[0]);
+        console.log(handle);
     }
 
     const handleUpload = async (e) => {
@@ -36,13 +38,14 @@ const AddRecipe = () => {
         formData.append('userID', input.userID)
         formData.append('tittle', input.tittle)
         formData.append('ingredients', input.ingredients)
-        formData.append('photo', photo.name)
+        formData.append('photo', photo, photo.name)
         try {
             const result = await axios({
                 method: 'POST',
                 url: 'https://strange-red-gaiters.cyclic.app/recipe',
                 data: formData,
                 headers: {
+                    "Content-Type": "multipart/form-data",
                     authorization: `Bearer ${token}`
                 }
             })
@@ -66,7 +69,7 @@ const AddRecipe = () => {
                             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG (MAX. 800x400px)</p>
                         </div>
-                        <input id="dropzone-file" name="photo" onChange={handlePhoto} value={input.photo} type="file" className="hidden" />
+                        <input id="dropzone-file" name="photo" onChange={handlePhoto} type="file" className="hidden" />
                     </label>
                 </div> 
                 <input type="text" name="tittle" onChange={handleChange} value={input.tittle} placeholder="Title" className="w-full rounded-xl py-7 px-10 bg-gray-100 mt-10" />

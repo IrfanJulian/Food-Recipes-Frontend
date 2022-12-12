@@ -8,7 +8,6 @@ import { useRouter } from "next/router"
 
 const Profile = () => {
 
-    const token = localStorage.getItem('token')
     const [data, setData] = useState({})
     const [update, setUpdate] = useState([])
     const [dataRecipes, setDataRecipe] = useState([])
@@ -20,6 +19,7 @@ const Profile = () => {
     useEffect(()=>{
         const getProfile = async () =>{
             try {         
+                const token = localStorage.getItem('token')
                 const result = await axios({
                   method: 'GET',
                   url: `${process.env.URL_PROFILE}`,
@@ -39,6 +39,7 @@ const Profile = () => {
     useEffect(()=>{
         const getRecipes = async() => {
             try {
+                const token = localStorage.getItem('token')
                 const result = await axios({
                     method: 'GET',
                     url: `${process.env.URL_GET_RECIPES}`,
@@ -52,7 +53,7 @@ const Profile = () => {
             }
         }
         getRecipes()
-    }, [token])
+    }, [])
 
         const handlePhoto = (e) => {
             const handle = e.target.files[0]

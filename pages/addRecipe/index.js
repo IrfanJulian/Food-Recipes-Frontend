@@ -28,8 +28,8 @@ const AddRecipe = () => {
 
     const handlePhoto = (e) => {
         const handle = e.target.files[0]
-        setPhoto(handle)
-        console.log(handle);
+        setPhoto(handle);
+        // console.log(handle);
     }
 
     const handleUpload = async (e) => {

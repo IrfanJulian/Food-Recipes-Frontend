@@ -1,24 +1,49 @@
+import { useEffect, useState } from "react"
 import Footer from "../../components/footer"
 import Navbar1 from "../../components/navbar"
+import { useRouter } from "next/router"
+import axios from "axios"
 
 const DetailResep = () => {
+
+    const router = useRouter()
+
+    const [data, setData] = useState({})
+    // const [ingredients, setIngredients] = useState()
+
+    useEffect(()=>{
+        const id = router.query.id
+        const token = localStorage.getItem('token')
+        const getDetail = async() => {
+                try {
+                const result = await axios({
+                    method: 'GET',
+                    url: `https://strange-red-gaiters.cyclic.app/recipe/${id}`,
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    }
+                })
+                setData(result.data.data[0])
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getDetail()
+    }, [])
+
   return (
     <div>
         <Navbar1 />
         <div className="container mx-auto">
-            <p className="text-5xl text-blue-900 text-center font-semibold mt-44">Loream Sandwich</p>
+            <p className="text-5xl text-blue-900 text-center font-semibold mt-44">{data.tittle}</p>
             <div className="img w-[59rem] h-[36rem] overflow-hidden border rounded-3xl mx-auto my-24">
-                <img src="/content.png" alt="content" className="w-[60rem]" />
+                <img src={data.photo} alt="content" className="h-[40rem] w-[60rem]" />
             </div>
             <ul className="list-disc">
                 <p className="text-4xl font-semibold mb-6">Ingredients</p>
-                <li className="ml-6"><p className="text-xl">2 Eggs</p></li>
-                <li className="ml-6"><p className="text-xl">2 tbsp mayonnaise</p></li>
-                <li className="ml-6"><p className="text-xl">3 slices bread</p></li>
-                <li className="ml-6"><p className="text-xl">a little butter</p></li>
-                <li className="ml-6"><p className="text-xl">⅓ carton of cress</p></li>
-                <li className="ml-6"><p className="text-xl">2-3 slices of tomato or a lettuce leaf and a slice of ham or cheese</p></li>
-                <li className="ml-6"><p className="text-xl">crisps , to serve</p></li>
+                <div>
+                    <li className="ml-6"><p className="text-xl">{data.ingredients}</p></li>
+                </div>
             </ul>
             <div className="wrapperVideo grid">
                 <p className="text-4xl font-semibold mt-20 mb-8">Video Step</p>

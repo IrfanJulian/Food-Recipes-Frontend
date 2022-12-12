@@ -1,73 +1,104 @@
+/* eslint-disable @next/next/no-img-element */
+import { useEffect, useState } from "react"
+import Footer from "../components/footer"
+import Navbar1 from "../components/navbar"
+import axios from "axios"
 import Link from "next/link"
-import { useState } from "react"
-import BackgroundSide from "../components/backgroundSide/index"
-import axios from 'axios'
-import { useRouter } from "next/router"
 
-const Login = () => {
+const LandingPage = () => {
 
-  const router = useRouter()
-  const [dataUser, setdataUser] = useState({
-    email: '',
-    password: ''
-  })
+  const [data, setData] = useState([])
 
-  const handleChange = (e) =>{
-      setdataUser({
-        ...dataUser,
-        [e.target.name]: e.target.value
-      })
-      // console.log(e.target.value)
-  }
-
-  const handleLogin = async(e) =>{
-    try {
-      e.preventDefault()
-        const result = await axios.post('https://strange-red-gaiters.cyclic.app/user/login', dataUser )
-        const token = localStorage.setItem('token', result.data.data.token)
-        const id = localStorage.setItem('id', result.data.data.id)
-        const refreshToken = localStorage.setItem('refreshToken', result.data.data.refreshToken)
-        const name = localStorage.setItem('name', result.data.data.name)
-        const photo = localStorage.setItem('photo', result.data.data.photo)
-
-        console.log(result)
-        handleLogin()
-          router.push('/landingPage')
-    } catch (error) {
-      console.log(error);
+  useEffect(()=>{
+    const token = localStorage.getItem('token')
+    const getRecipes = async() => {
+        try {
+            const result = await axios({
+                method: 'GET',
+                url: 'https://strange-red-gaiters.cyclic.app/recipe',
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            setData(result.data.data)
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
+    getRecipes()
+}, [])
+// console.log(data);
 
   return (
-    <div className='flex'>
-        <div className="w-1/2">
-          <BackgroundSide />
+    <div className="wrapper w-full h-screen">
+      <Navbar1 />
+      <div className="container flex h-full my-auto mx-auto">
+        <div className="w-1/2 my-auto">
+          <p className="text-8xl text-blue-900 font-semibold">Discover Recipe & Delicious Food</p>
+          <input type="text" placeholder="Search Restaurants or Food" className="bg-gray-200 my-16 py-6 px-12 w-full rounded-xl" />
         </div>
-        <div className="grid border w-1/2">
-          <div className="my-auto">
-            <p className="text-4xl font-bold text-yellow-400 text-center my-auto">Welcome</p>
-            <p className="text-lg text-gray-500 text-center my-10">Log in into your existing account</p>
-            <form onSubmit={handleLogin} className="w-1/2 grid mx-auto border-t-2 border-b-2 py-8">
-              <p className="text-md text-gray-500 mb-5 font-semibold">E-mail</p>
-              <input type="email" name="email" placeholder="Insert your email" onChange={handleChange} value={dataUser.email} className="h-12 border border-gray-400 w-full rounded-xl px-5" />
-              <p className="text-md text-gray-500 mb-3 mt-5 font-semibold">Password</p>
-              <input type="password" name="password" placeholder="Insert your password" onChange={handleChange} value={dataUser.password} className="h-12 border border-gray-400 w-full rounded-xl px-5" />
-              <div className="flex my-9">
-                <input type="checkbox" name="themeToggler" id="themeToggler" className="peer w-4 h-4 mt-1 mr-5" />
-                <label htmlFor="themeToggler"></label>
-                <p className="text-md text-gray-500">I Agree to Terms & Condition</p>
-              </div>
-              <button type="submit" className='h-14 bg-yellow-400 rounded-xl text-white'>Log In</button>
-              <Link href="/" className='mt-3 text-end'>Forgot Password?</Link>
-            </form>
-            <div className="flex mt-5 justify-center">
-              <p className='text-md text-gray-500 mr-2'>Dont have an account?</p>
-              <p><Link href="/" className='text-yellow-400 '>Sign up</Link></p>
+        <div className="w-1/2 my-auto">
+          <img src="/content.png" alt="content" className="ml-auto w-3/4 h-3/4" />
+        </div>
+      </div>
+
+      <div className="container mx-auto">
+        <div className="wrappertext border-l-8 border-yellow-400 py-7 pl-10">
+          <p className="text-4xl font-semibold">Popular For You !</p>
+        </div>
+        <div className="flex">
+          <div className="wrappercontent w-1/2 py-24">
+            <img src="/content2.png" alt="content2" className="w-4/6 h-6/6" />
+          </div>
+          <div className="wrappercontent grid w-1/2">
+            <div className="wrappertext w-1/2 my-auto">
+              <p className="text-4xl font-semibold">Healthy Bone Broth Ramen (Quick & Easy)</p>
+              <p className="text-lg text-gray-500 my-8">Quick + Easy Chicken Bone Broth Ramen- Healthy chicken ramen in a hurry? That`s right!</p>
+              <button className="py-4 px-12 bg-yellow-400 text-white rounded-xl">Learn More</button>
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="container mx-auto">
+        <div className="wrappertext border-l-8 border-yellow-400 py-7 pl-10">
+          <p className="text-4xl font-semibold">New Recipe</p>
+        </div>
+        <div className="flex">
+          <div className="wrappercontent w-1/2 py-24">
+            <img src="/content3.png" alt="content2" className="w-4/6 h-6/6" />
+          </div>
+          <div className="wrappercontent grid w-1/2">
+            <div className="wrappertext w-1/2 my-auto">
+              <p className="text-4xl font-semibold">Healthy Bone Broth Ramen (Quick & Easy)</p>
+              <p className="text-lg text-gray-500 my-8">Quick + Easy Chicken Bone Broth Ramen- Healthy chicken ramen in a hurry? That`s right!</p>
+              <button className="py-4 px-12 bg-yellow-400 text-white rounded-xl">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto">
+        <div className="wrappertext border-l-8 border-yellow-400 py-7 pl-10">
+          <p className="text-4xl font-semibold">Popular Recipe</p>
+        </div>
+          <div className="grid grid-cols-3 gap-28 py-7">
+            { data.map((item)=>
+            <Link href={`/detailResep/${item.id}`} key={item.id}>
+            <div className="card relative rounded-2xl overflow-hidden border w-[28rem] h-[28rem]">
+              <img src={item.photo} alt="asset" className="h-[28rem] w-[60rem]" />
+              <div className="absolute left-10 bottom-10 w-1/4">
+                <p className="text-3xl text-white font-semibold">{item.tittle}</p>
+              </div>
+            </div>
+            </Link>
+              )}
+          </div>
+        </div>
+
+        <Footer />
     </div>
   )
 }
 
-export default Login
+export default LandingPage

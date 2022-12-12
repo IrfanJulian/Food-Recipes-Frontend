@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react"
 import Footer from "../../components/footer"
 import Navbar1 from "../../components/navbar"
@@ -29,7 +30,7 @@ const DetailResep = () => {
             }
         }
         getDetail()
-    }, [])
+    }, [router.query.id])
 
   return (
     <div>

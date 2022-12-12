@@ -15,7 +15,7 @@ const LandingPage = () => {
         try {
             const result = await axios({
                 method: 'GET',
-                url: 'https://strange-red-gaiters.cyclic.app/recipe',
+                url: `${process.env.URL_GET_RECIPES}`,
                 headers: {
                     authorization: `Bearer ${token}`
                 }

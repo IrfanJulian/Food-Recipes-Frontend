@@ -14,12 +14,15 @@ const Profile = () => {
     const [dataRecipes, setDataRecipe] = useState([])
     const photo = data.photo
 
+    // const env = process.env.PROFILE
+    // console.log(env);
+
     useEffect(()=>{
         const getProfile = async () =>{
             try {         
                 const result = await axios({
                   method: 'GET',
-                  url: 'https://strange-red-gaiters.cyclic.app/user/profile',
+                  url: `${process.env.URL_PROFILE}`,
                   headers: {
                     'Authorization' : `Bearer ${localStorage.getItem('token')}`
                   }
@@ -38,7 +41,7 @@ const Profile = () => {
             try {
                 const result = await axios({
                     method: 'GET',
-                    url: 'https://strange-red-gaiters.cyclic.app/recipe',
+                    url: `${process.env.URL_GET_RECIPES}`,
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -64,13 +67,14 @@ const Profile = () => {
             try {
                 const updateData = await axios({
                     method: 'PUT',
-                    url: `https://strange-red-gaiters.cyclic.app/user/${data.id}`,
+                    url: `${process.env.URL_UPDATE_PROFILE_PICT}/${data.id}`,
                     data: formData,
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "authorization": `Bearer ${token}`
                     }
                 })
+                alert('Update Photo Sucess')
                 // console.log(updateData);
             } catch (error) {
                 console.log(error);
@@ -94,6 +98,7 @@ const Profile = () => {
                     <button type="submit" className="border-yellow-400 text-xl">Change</button>
                 </form>
             <p className="text-3xl font-semibold text-center mt-10">{data.name}</p>
+            {/* <p className="text-3xl font-semibold text-center mt-10">VALUE ENV = {process.env.URL_PROFILE}</p> */}
         </div>
         <div className="container mx-auto">
             <div className="flex">

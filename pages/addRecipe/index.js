@@ -49,7 +49,8 @@ const AddRecipe = () => {
                     authorization: `Bearer ${token}`
                 }
             })
-            console.log(result);
+            // console.log(result);
+            alert('Add Data Sucess')
         } catch (error) {
             console.log('failed', error);
         }

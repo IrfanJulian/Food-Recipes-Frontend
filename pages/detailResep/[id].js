@@ -18,7 +18,7 @@ const DetailResep = () => {
                 try {
                 const result = await axios({
                     method: 'GET',
-                    url: `https://strange-red-gaiters.cyclic.app/recipe/${id}`,
+                    url: `${process.env.URL_DETAIL_ID}/${id}`,
                     headers: {
                         authorization: `Bearer ${token}`
                     }

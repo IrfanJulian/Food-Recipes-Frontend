@@ -22,7 +22,7 @@ const Login = () => {
   const handleLogin = async(e) =>{
     try {
       e.preventDefault()
-        const result = await axios.post('https://strange-red-gaiters.cyclic.app/user/login', dataUser )
+        const result = await axios.post(`${process.env.URL_LOGIN}`, dataUser )
         const token = localStorage.setItem('token', result.data.data.token)
         const id = localStorage.setItem('id', result.data.data.id)
         const refreshToken = localStorage.setItem('refreshToken', result.data.data.refreshToken)
@@ -31,6 +31,7 @@ const Login = () => {
 
         // console.log(result)
         handleLogin()
+        alert('Login Sucess')
           router.push('/')
     } catch (error) {
       console.log(error);

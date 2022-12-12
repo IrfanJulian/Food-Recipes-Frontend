@@ -39,7 +39,7 @@ const Register = () => {
       if(data.password != newPassword){
         console.log('check your password')
       }else{
-        const result = await axios.post('https://strange-red-gaiters.cyclic.app/user/register', data)
+        const result = await axios.post(`${process.env.URL_REGISTER}`, data)
         // console.log(result);
         handleRegister()
         router.push('/auth/login')

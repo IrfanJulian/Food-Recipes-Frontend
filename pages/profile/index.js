@@ -64,6 +64,7 @@ const Profile = () => {
             e.preventDefault()
             // console.log(token);
             const formData = new FormData()
+            const token = localStorage.getItem('token')
             formData.append('photo', update, update.name)
             try {
                 const updateData = await axios({

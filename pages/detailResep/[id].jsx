@@ -19,7 +19,7 @@ const DetailResep = () => {
                 try {
                 const result = await axios({
                     method: 'GET',
-                    url: `${process.env.URL_DETAIL_ID}/${id}`,
+                    url: `http://localhost:7500/recipe/${id}`,
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -31,31 +31,40 @@ const DetailResep = () => {
         }
         getDetail()
     }, [router.query.id])
+    console.log(data);
 
   return (
     <div>
         <Navbar1 />
         <div className="container mx-auto">
             <p className="text-5xl text-blue-900 text-center font-semibold mt-44">{data.tittle}</p>
-            <div className="img w-[59rem] h-[36rem] overflow-hidden border rounded-3xl mx-auto my-24">
-                <img src={data.photo} alt="content" className="h-[40rem] w-[60rem]" />
+            <div className="img w-[59rem] h-[36rem] overflow-hidden rounded-3xl mx-auto my-24">
+                <video className="w-[59rem] h-[36rem]" controls>
+                    <source src={data.photo} type="video/mp4" />
+                </video>
             </div>
-            <ul className="list-disc">
+            <div className="mb-16">
+                <p className="text-4xl font-semibold mb-6">Description</p>
+                <div>
+                    <p className="text-xl">{data.description}</p>
+                </div>
+            </div>
+            <div className="">
                 <p className="text-4xl font-semibold mb-6">Ingredients</p>
                 <div>
-                    <li className="ml-6"><p className="text-xl">{data.ingredients}</p></li>
+                    <p className="text-xl">{data.ingredients}</p>
                 </div>
-            </ul>
-            <div className="wrapperVideo grid">
+            </div>
+            {/* <div className="wrapperVideo grid">
                 <p className="text-4xl font-semibold mt-20 mb-8">Video Step</p>
                 <button className="py-6 px-36 w-1/4 bg-yellow-400 text-white font-bold rounded-xl mb-8">Play</button>
                 <button className="py-6 px-36 w-1/4 bg-yellow-400 text-white font-bold rounded-xl mb-8">Play</button>
                 <button className="py-6 px-36 w-1/4 bg-yellow-400 text-white font-bold rounded-xl mb-8">Play</button>
                 <button className="py-6 px-36 w-1/4 bg-yellow-400 text-white font-bold rounded-xl mb-8">Play</button>
-            </div>
+            </div> */}
             <div className="comment my-8">
                 <input type="text" className="h-[24rem] w-full rounded-xl bg-gray-200 px-10" placeholder="Comment :" />
-                <p className="text-3xl font-semibold my-16">Comment :</p>
+                <p className="text-3xl font-semibold my-16">Comments :</p>
                 <div className="flex">
                     <div className="pict w-[4rem] h-[4rem] rounded-full overflow-hidden mr-8">
                         <img src="/iconprofile.png" alt="icon" className="w-[4rem] h-[4rem]" />

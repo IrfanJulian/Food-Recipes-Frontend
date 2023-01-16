@@ -1,19 +1,26 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import Swal from "sweetalert2"
 import Footer from "../../components/footer"
 import Navbar1 from "../../components/navbar"
-import { useRouter } from "next/router"
+// import { useRouter } from "next/router"
 
 const AddRecipe = () => {
 
-    const token = localStorage.getItem('token')
-    const userID = localStorage.getItem('id')
-    // console.log(id);
-    
+    useEffect(()=>{
+        const idUser = localStorage.getItem('id')
+        const token = localStorage.getItem('token')
+        setId(idUser)
+        setToken(token)
+    }, [])
+    const [id, setId] = useState()
+    const [token, setToken] = useState()
+    // console.log(id); 
     const [input, setInput] = useState({
-        userID: userID,
+        // userid: id,
         tittle: '',
-        ingredients: ''
+        ingredients: '',
+        description: ''
     })
 
     const [photo, setPhoto] = useState([])
@@ -31,28 +38,45 @@ const AddRecipe = () => {
         setPhoto(handle);
         // console.log(handle);
     }
+    
 
     const handleUpload = async (e) => {
         e.preventDefault()
         const formData = new FormData()
-        formData.append('userID', input.userID)
+        formData.append('userid', id)
         formData.append('tittle', input.tittle)
         formData.append('ingredients', input.ingredients)
+        formData.append('description', input.description)
         formData.append('photo', photo, photo.name)
-        try {
-            const result = await axios({
-                method: 'POST',
-                url: 'https://strange-red-gaiters.cyclic.app/recipe',
-                data: formData,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    authorization: `Bearer ${token}`
-                }
-            })
-            // console.log(result);
-            alert('Add Data Sucess')
-        } catch (error) {
-            console.log('failed', error);
+        if(token){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "The recipes will upload",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then(async(result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await axios.post(`http://localhost:7500/recipe`, formData, { withCredentials: true })
+                        Swal.fire(
+                            'Success Upload!',
+                            'Congratulations.',
+                            'success'
+                            )
+                        window.location.reload()
+                    } catch (error) {
+                        console.log(error);
+                        Swal.fire(
+                            'Upload Failed!',
+                            'Try again.',
+                            'error'
+                            )
+                        }
+                    }
+                })
         }
     }
     // console.log('input', input)
@@ -74,7 +98,8 @@ const AddRecipe = () => {
                     </label>
                 </div> 
                 <input type="text" name="tittle" onChange={handleChange} value={input.tittle} placeholder="Title" className="w-full rounded-xl py-7 px-10 bg-gray-100 mt-10" />
-                <input type="text" name="ingredients" onChange={handleChange} value={input.ingredients} placeholder="Ingredients" className="w-full rounded-xl px-10 bg-gray-100 mt-10 h-64" />
+                <input type="text" name="ingredients" onChange={handleChange} value={input.ingredients} placeholder="Ingredients" className="w-full rounded-xl px-10 bg-gray-100 mt-10 h-44" />
+                <input type="text" name="description" onChange={handleChange} value={input.description} placeholder="Description" className="w-full rounded-xl px-10 bg-gray-100 mt-10 h-64" />
                 <button type="submit" className="px-36 py-4 bg-yellow-400 rounded-xl text-white text-xl font-semibold mx-auto my-10">Post</button>
             </form>
         </div>

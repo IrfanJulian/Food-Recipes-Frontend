@@ -11,6 +11,7 @@ const Profile = () => {
     const [data, setData] = useState({})
     const [update, setUpdate] = useState([])
     const [dataRecipes, setDataRecipe] = useState([])
+    const [myRecipe, setMyRecipe] = useState()
     const photo = data.photo
 
     // const env = process.env.PROFILE
@@ -18,15 +19,8 @@ const Profile = () => {
 
     useEffect(()=>{
         const getProfile = async () =>{
-            try {         
-                const token = localStorage.getItem('token')
-                const result = await axios({
-                  method: 'GET',
-                  url: `${process.env.URL_PROFILE}`,
-                  headers: {
-                    'Authorization' : `Bearer ${localStorage.getItem('token')}`
-                  }
-                })
+            try {
+                const result = await axios.get(`http://localhost:7500/user/profile`, { withCredentials: true })
                 setData(result.data.data)
             } catch (error) {
                 console.log(error);
@@ -42,7 +36,7 @@ const Profile = () => {
                 const token = localStorage.getItem('token')
                 const result = await axios({
                     method: 'GET',
-                    url: `${process.env.URL_GET_RECIPES}`,
+                    url: `http://localhost:7500/recipe`,
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -54,6 +48,26 @@ const Profile = () => {
         }
         getRecipes()
     }, [])
+
+    const [id, setId] = useState()
+    useEffect(()=>{
+        const idUser = localStorage.getItem('id')
+        setId(idUser)
+    }, [])
+    // console.log(id);
+    
+    useEffect(()=>{
+        const getMyRecipe = async() => {
+            try {
+                const res = await axios.get(`http://localhost:7500/recipe/myrecipe/${id}`)
+                setMyRecipe(res.data.data)
+            } catch (error) {
+                console.log(erros);
+            }
+        }
+        getMyRecipe()
+    }, [id])
+    console.log(myRecipe);
 
         const handlePhoto = (e) => {
             const handle = e.target.files[0]
@@ -67,17 +81,14 @@ const Profile = () => {
             const token = localStorage.getItem('token')
             formData.append('photo', update, update.name)
             try {
-                const updateData = await axios({
+                await axios({
                     method: 'PUT',
-                    url: `${process.env.URL_UPDATE_PROFILE_PICT}/${data.id}`,
+                    url: `http://localhost:7500/user/${data.id}`,
                     data: formData,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "authorization": `Bearer ${token}`
-                    }
+                    withCredentials: true
                 })
                 alert('Update Photo Sucess')
-                // console.log(updateData);
+                window.location.reload()
             } catch (error) {
                 console.log(error);
             }
@@ -105,21 +116,21 @@ const Profile = () => {
         <div className="container mx-auto">
             <div className="flex">
                 <Link href='/'><p className="text-xl text-gray-600 font-semibold mr-8">My Recipe</p></Link>
-                <Link href='/'><p className="text-xl text-gray-600 font-semibold mr-8">Saved Recipe</p></Link>
-                <Link href='/'><p className="text-xl text-gray-600 font-semibold mr-8">Like Recipe</p></Link>
             </div>
             <hr className="my-10 border border-gray-200" />
             <div className="h-60 wrapperrecipe grid grid-cols-4 gap-20 overflow-hidden">
-                {dataRecipes.map((item)=>
+                {myRecipe ? myRecipe.map((item)=>
                 <Link href={`/detailResep/${item.id}`} key={item.id}>
                 <div key={item.id} className="card relative w-80 h-56 rounded-xl overflow-hidden">
-                    <img src={item.photo} alt="recipe" className="w-80 h-56" />
+                    <video className="w-80 h-56" controls>
+                        <source src={item.photo} type="video/mp4" />
+                    </video>
                     <div className="text absolute left-5 bottom-5 w-1/4">
                         <p className="text-3xl text-white font-semibold">{item.tittle}</p>
                     </div>
                 </div>
                 </Link>
-                )}
+                ) : null }
             </div>
         </div>
         <Footer />

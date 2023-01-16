@@ -3,18 +3,18 @@ import { useState } from "react"
 import BackgroundSide from "../../../components/backgroundSide"
 import axios from 'axios'
 import { useRouter } from "next/router"
+import Swal from "sweetalert2"
 
 
 const Register = () => {
 
   const router = useRouter()
-
+  
   const [data, setData] = useState({
     name: '',
     phone: '',
     email: '',
-    password: '',
-    photo: null
+    password: ''
   })
 
   const [newPassword, setNewPassword] = useState('')
@@ -33,20 +33,45 @@ const Register = () => {
     })
   }
 
+  const [check, setCheck] = useState(false)
+
+  const handleCheck = (e) => {
+    setCheck(e.target.checked)
+  }
+
   const handleRegister = async(e) => {
     try {
       e.preventDefault()
-      if(data.password != newPassword){
-        console.log('check your password')
+      if(check === false){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You need to agree to terms and condition!'
+        })
+      }else if(data.password !== newPassword){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Password doesn`t match'
+        })
       }else{
-        const result = await axios.post(`${process.env.URL_REGISTER}`, data)
+        await axios.post(`http://localhost:7500/user/register`, data)
         // console.log(result);
-        handleRegister()
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucess...',
+          text: 'Register Sucess. just Login now'
+        })
         router.push('/auth/login')
       }
-      } catch (error) {
-        console.log(error);
-      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Register failed. just try again!'
+      })
+    }
   }
 
 
@@ -71,8 +96,8 @@ const Register = () => {
               <p className="text-md text-gray-500 mb-3 font-semibold mt-5">Confirm password</p>
               <input type="password" placeholder="Insert your password" onChange={handlePassword} name="newPassword" value={newPassword} className="h-12 border border-gray-400 w-full rounded-xl px-5" />
               <div className="flex my-5">
-                <input type="checkbox" name="themeToggler" id="themeToggler" className="peer w-4 h-4 mt-1 mr-5" />
-                <label htmlFor="themeToggler"></label>
+                <input type="checkbox" name="check" onChange={handleCheck} id="check" className="peer w-4 h-4 mt-1 mr-5" />
+                <label htmlFor="check"></label>
                 <p className="text-md text-gray-500">I Agree to Terms & Condition</p>
               </div>
               <button type="submit" className='h-14 bg-yellow-400 rounded-xl text-white'>Register</button>

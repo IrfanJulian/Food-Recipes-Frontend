@@ -1,5 +1,5 @@
-# ![Blanja](https://res.cloudinary.com/ddpo9zxts/image/upload/v1673520342/Recipes/Food/jxt1dhv2kchareh1rz4t.jpg)
-# Blanja
+# Food recipe
+# ![Food](https://res.cloudinary.com/ddpo9zxts/image/upload/v1673520342/Recipes/Food/jxt1dhv2kchareh1rz4t.jpg)
 Food Recipe is collection of many food recipe application. Happy cooking.
 
 

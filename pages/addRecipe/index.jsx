@@ -15,9 +15,8 @@ const AddRecipe = () => {
     }, [])
     const [id, setId] = useState()
     const [token, setToken] = useState()
-    // console.log(id); 
+
     const [input, setInput] = useState({
-        // userid: id,
         tittle: '',
         ingredients: '',
         description: ''
@@ -30,13 +29,11 @@ const AddRecipe = () => {
             ...input,
             [e.target.name]: e.target.value
         })
-        // console.log(e)
     }
 
     const handlePhoto = (e) => {
         const handle = e.target.files[0]
         setPhoto(handle);
-        // console.log(handle);
     }
     
 
@@ -60,7 +57,7 @@ const AddRecipe = () => {
               }).then(async(result) => {
                 if (result.isConfirmed) {
                     try {
-                        await axios.post(`http://localhost:7500/recipe`, formData, { withCredentials: true })
+                        await axios.post(`${process.env.NEXT_PUBLIC_URL_API}/recipe`, formData, { withCredentials: true })
                         Swal.fire(
                             'Success Upload!',
                             'Congratulations.',
@@ -79,8 +76,6 @@ const AddRecipe = () => {
                 })
         }
     }
-    // console.log('input', input)
-    // console.log('photo', photo)
 
   return (
     <div>

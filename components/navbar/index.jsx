@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios"
 import Link from "next/link"
+import Router from "next/router"
 import { useEffect, useState } from "react"
 // import { useEffect, useState } from "react"
 
@@ -11,7 +12,7 @@ const Navbar = () => {
   useEffect(()=>{
     const getData = async() => {
         try {
-            const res = await axios.get(`http://localhost:7500/user/profile`, {withCredentials: true})
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/user/profile`, {withCredentials: true})
             setData(res.data.data);
         } catch (error) {
             console.log(error);
@@ -21,7 +22,8 @@ const Navbar = () => {
 }, [])
 
   const handleLogout = () => {
-    
+    localStorage.clear()
+    Router.push('/auth/login')
   }
 
   return (
@@ -38,7 +40,7 @@ const Navbar = () => {
                 <img src='/iconuser.png' alt="icon" className="w-[3rem] h-[3rem] rounded-full" />
               }
                 <div className="ml-3 my-auto">
-                  <Link href='/auth/login' onClick={''}><p className="text-blue-900 text-lg font-semibold">Logout</p></Link>
+                  <Link href='/auth/login' onClick={handleLogout}><p className="text-blue-900 text-lg font-semibold">Logout</p></Link>
                 </div>
               </div>
           </div> 
@@ -58,27 +60,5 @@ const Navbar = () => {
       </div>
   )
 }
-
-// export async function getServerSideProps(context){
-//   try {
-//     // const cookie = context
-//     // // Fetch data from external API
-//     // console.log(cookie);
-//     const token = localStorage.getItem(token)
-//     const resUser = await axios({
-//       method: 'GET',
-//       url: `http://localhost:7500/user/profile`,
-//       header: {
-//         authorization: `Bearer ${token}`
-//       }
-//   })
-//     const userDetail = await resUser.json()
-//     console.log(userDetail);
-//     // Pass data to the page via props
-//     return { props: { userDetail } }
-// } catch (error) {
-//     console.log(error);
-// }
-// }
 
 export default Navbar

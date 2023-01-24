@@ -14,9 +14,9 @@ const Home = ({data}) => {
 export async function getServerSideProps() {
     try {      
         // Fetch data from external API
-        const res = await axios.get(`http://localhost:7500/recipe`)
+        const apiEnv = process.env.DB_API
+        const res = await axios.get(`${apiEnv}/recipe`)
         const data = res.data.data
-
         // Pass data to the page via props
         return { props: { data } }
     } catch (error) {

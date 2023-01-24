@@ -36,7 +36,7 @@ const Login = () => {
           text: 'You need to agree terms and condition!'
         })
       }else{
-        const result = await axios.post(`http://localhost:7500/user/login`, dataUser, {withCredentials: true} )
+        const result = await axios.post(`${process.env.NEXT_PUBLIC_URL_API}/user/login`, dataUser, {withCredentials: true} )
         localStorage.setItem('token', result.data.data.token)
         localStorage.setItem('id', result.data.data.id)
         localStorage.setItem('refreshToken', result.data.data.refreshToken)

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import Footer from "../../components/footer"
 import Navbar1 from "../../components/navbar"
 import { useRouter } from "next/router"
+import Swal from "sweetalert2"
 
 const Profile = () => {
 
@@ -12,7 +13,7 @@ const Profile = () => {
     const [update, setUpdate] = useState([])
     const [dataRecipes, setDataRecipe] = useState([])
     const [myRecipe, setMyRecipe] = useState()
-    const photo = data.photo
+    const [img, setImg] = useState()
 
     // const env = process.env.PROFILE
     // console.log(env);
@@ -20,8 +21,9 @@ const Profile = () => {
     useEffect(()=>{
         const getProfile = async () =>{
             try {
-                const result = await axios.get(`http://localhost:7500/user/profile`, { withCredentials: true })
+                const result = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/user/profile`, { withCredentials: true })
                 setData(result.data.data)
+                setImg(result.data.data.photo)
             } catch (error) {
                 console.log(error);
             }
@@ -36,7 +38,7 @@ const Profile = () => {
                 const token = localStorage.getItem('token')
                 const result = await axios({
                     method: 'GET',
-                    url: `http://localhost:7500/recipe`,
+                    url: `${process.env.NEXT_PUBLIC_URL_API}/recipe`,
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -59,15 +61,14 @@ const Profile = () => {
     useEffect(()=>{
         const getMyRecipe = async() => {
             try {
-                const res = await axios.get(`http://localhost:7500/recipe/myrecipe/${id}`)
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/recipe/myrecipe/${id}`)
                 setMyRecipe(res.data.data)
             } catch (error) {
-                console.log(erros);
+                console.log(error);
             }
         }
         getMyRecipe()
     }, [id])
-    console.log(myRecipe);
 
         const handlePhoto = (e) => {
             const handle = e.target.files[0]
@@ -76,9 +77,7 @@ const Profile = () => {
 
         const handleUpload = async(e) => {
             e.preventDefault()
-            // console.log(token);
             const formData = new FormData()
-            const token = localStorage.getItem('token')
             formData.append('photo', update, update.name)
             try {
                 await axios({
@@ -87,7 +86,11 @@ const Profile = () => {
                     data: formData,
                     withCredentials: true
                 })
-                alert('Update Photo Sucess')
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Update Photo Success'
+                  })
+                    router.push('/')
                 window.location.reload()
             } catch (error) {
                 console.log(error);
@@ -99,17 +102,17 @@ const Profile = () => {
         <Navbar1 />
         <div className="container grid mt-44 mx-auto mb-36">
             <div className="bio w-44 h-44 rounded-full overflow-hidden mx-auto">
-                {photo ?
-                <img src={data.photo} alt="icon" className="w-44 h-44" /> : <img src='/iconuser2.png' alt="icon" className="w-44 h-44" /> 
+                {img ?
+                <img src={img} alt="icon" className="w-44 h-44" /> : <img src='/iconuser2.png' alt="icon" className="w-44 h-44" /> 
                 }
             </div>
-                <form onSubmit={handleUpload} className="flex justify-center mt-5">
-                    <label htmlFor="changephoto" className="text-center mr-3">
+                {/* <form onSubmit={handleUpload} className="flex justify-center mt-5"> */}
+                    <label htmlFor="changephoto" className="text-center mx-auto my-10">
                         <span className="text-xl text-gray-700"><img src="/edit-picture.png" alt="edit" /></span>
                         <input id="changephoto" name="photo" onChange={handlePhoto} type="file" className="hidden" />
                     </label>
-                    <button type="submit" className="border-yellow-400 text-xl">Change</button>
-                </form>
+                    <button type="submit" onClick={handleUpload} className="border-yellow-400 text-xl font-semibold text-white py-3 px-5 rounded-xl bg-yellow-400 w-max mx-auto">Change</button>
+                {/* </form> */}
             <p className="text-3xl font-semibold text-center mt-10">{data.name}</p>
             {/* <p className="text-3xl font-semibold text-center mt-10">VALUE ENV = {process.env.URL_PROFILE}</p> */}
         </div>

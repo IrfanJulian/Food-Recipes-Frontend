@@ -55,7 +55,7 @@ const Register = () => {
           text: 'Password doesn`t match'
         })
       }else{
-        await axios.post(`http://localhost:7500/user/register`, data)
+        await axios.post(`${process.env.NEXT_PUBLIC_URL_API}/user/register`, data)
         // console.log(result);
         Swal.fire({
           icon: 'success',

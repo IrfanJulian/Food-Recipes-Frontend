@@ -43,7 +43,6 @@ const DetailResep = () => {
         const idrecipe = localStorage.getItem('idrecipe')
         setUserid(iduser)
         setRecipeid(idrecipe)
-        console.log(iduser, '====>>>>>' , idrecipe);
     }, [data.id])
 
     const [foodComment, setFoodComment] = useState([])
@@ -104,7 +103,9 @@ const DetailResep = () => {
                 <p className="text-5xl text-blue-900 text-center font-semibold mt-44">{data.tittle}</p>
                 <div className="img w-[59rem] h-[36rem] overflow-hidden rounded-3xl mx-auto my-24">
                     <video className="w-[59rem] h-[36rem]" controls>
+                        {data ?
                         <source src={data.photo} type="video/mp4" />
+                        : null}
                     </video>
                 </div>
                 <div className="mb-16">

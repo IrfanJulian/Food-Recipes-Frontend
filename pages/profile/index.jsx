@@ -19,9 +19,10 @@ const Profile = () => {
     // console.log(env);
 
     useEffect(()=>{
+        const id = localStorage.getItem('id')
         const getProfile = async () =>{
             try {
-                const result = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/user/profile`, { withCredentials: true })
+                const result = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/user/${id}`, { withCredentials: true })
                 setData(result.data.data)
                 setImg(result.data.data.photo)
             } catch (error) {
@@ -90,7 +91,7 @@ const Profile = () => {
                     icon: 'success',
                     title: 'Update Photo Success'
                   })
-                    router.push('/')
+                    // router.push('/')
                 window.location.reload()
             } catch (error) {
                 console.log(error);
@@ -113,7 +114,9 @@ const Profile = () => {
                     </label>
                     <button type="submit" onClick={handleUpload} className="border-yellow-400 text-xl font-semibold text-white py-3 px-5 rounded-xl bg-yellow-400 w-max mx-auto">Change</button>
                 {/* </form> */}
+            {data ?
             <p className="text-3xl font-semibold text-center mt-10">{data.name}</p>
+            : null }
             {/* <p className="text-3xl font-semibold text-center mt-10">VALUE ENV = {process.env.URL_PROFILE}</p> */}
         </div>
         <div className="container mx-auto">

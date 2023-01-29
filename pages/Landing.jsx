@@ -9,13 +9,13 @@ import { useRouter } from "next/router"
 const LandingPage = ({data}) => {
 
   const [dataRecipes, setDataRecipes] = useState()
-  const [dataPopular, setDataPopular] = useState()
+  // const [dataPopular, setDataPopular] = useState()
   const [id, setId] = useState()
   const router = useRouter()
 
   useEffect(()=>{
       setDataRecipes(data)
-      setDataPopular(data[0])
+      // setDataPopular(data[0])
       // setId(localStorage.getItem('idrecipe'))
   }, [data])
 
@@ -55,11 +55,13 @@ const LandingPage = ({data}) => {
             <img src="/ramen.jpg" alt="content2" className="w-4/6 h-6/6" />
           </div>
           <div className="wrappercontent grid w-1/2">
+            {dataRecipes ?
             <div className="wrappertext w-1/2 my-auto">
-              <p className="text-4xl font-semibold">{dataPopular.tittle}</p>
-              <p className="text-lg text-gray-500 my-8">{dataPopular.description}</p>
+              <p className="text-4xl font-semibold">{dataRecipes[0].tittle}</p>
+              <p className="text-lg text-gray-500 my-8">{dataRecipes[0].description}</p>
               <button onClick={handleMoveDetail} className="py-4 px-12 bg-yellow-400 text-white rounded-xl">Learn More</button>
             </div>
+            : null}
           </div>
         </div>
       </div>

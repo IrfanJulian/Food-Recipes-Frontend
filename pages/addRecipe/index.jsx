@@ -39,6 +39,7 @@ const AddRecipe = () => {
 
     const handleUpload = async (e) => {
         e.preventDefault()
+        const token = localStorage.getItem('token')
         const formData = new FormData()
         formData.append('userid', id)
         formData.append('tittle', input.tittle)
@@ -57,7 +58,15 @@ const AddRecipe = () => {
               }).then(async(result) => {
                 if (result.isConfirmed) {
                     try {
-                        await axios.post(`${process.env.NEXT_PUBLIC_URL_API}/recipe`, formData, { withCredentials: true })
+                        await axios({
+                            method: 'POST',
+                            url: `${process.env.NEXT_PUBLIC_URL_API}/recipe`,
+                            data: formData,
+                            headers: {
+                                authorization: `Bearer ${token}`
+                            },
+                            withCredentials: true
+                        })
                         Swal.fire(
                             'Success Upload!',
                             'Congratulations.',

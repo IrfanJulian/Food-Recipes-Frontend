@@ -1,6 +1,6 @@
 // import axios from 'axios'
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import React from 'react'
 import LandingPage from './Landing'
 
 const Home = ({data}) => {
@@ -17,6 +17,7 @@ export async function getServerSideProps() {
         const apiEnv = process.env.DB_API
         const res = await axios.get(`${apiEnv}/recipe`)
         const data = res.data.data
+        // console.log(data);
         // Pass data to the page via props
         return { props: { data } }
     } catch (error) {

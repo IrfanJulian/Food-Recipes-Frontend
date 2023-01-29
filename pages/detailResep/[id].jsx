@@ -9,6 +9,7 @@ import Swal from "sweetalert2"
 const DetailResep = () => {
 
     const router = useRouter()
+
     const [data, setData] = useState({})
     const [userid, setUserid] = useState()
     const [recipeid, setRecipeid] = useState()
@@ -36,13 +37,13 @@ const DetailResep = () => {
         }
         getDetail()
     }, [router.query.id])
+    // console.log(data);
 
     useEffect(()=>{
         const iduser = localStorage.getItem('id')
         const idrecipe = localStorage.getItem('idrecipe')
         setUserid(iduser)
         setRecipeid(idrecipe)
-        console.log(iduser, '====>>>>>' , idrecipe);
     }, [data.id])
 
     const [foodComment, setFoodComment] = useState([])
@@ -66,7 +67,7 @@ const DetailResep = () => {
         e.preventDefault()
         const dataUpload = {
             userid: userid,
-            recipeid: parseInt(recipeid),
+            recipeid: recipeid,
             comment: comment
         }
         try {
@@ -74,6 +75,9 @@ const DetailResep = () => {
                 method: 'POST',
                 url: `${process.env.NEXT_PUBLIC_URL_API}/comment`,
                 data: dataUpload,
+                // headers: {
+                //     "Content-Type": "application/json"
+                // },
                 withCredentials: true
             })
             Swal.fire({
@@ -96,13 +100,15 @@ const DetailResep = () => {
         <Navbar1 />
         <div className="container mx-auto">
             { data ? 
-            <div className="wrapperr">
+            <div className="wrapperr" key={data.id}>
                 <p className="text-5xl text-blue-900 text-center font-semibold mt-44">{data.tittle}</p>
-                {data.photo ?
-                    <video className="h-[35rem] w-[70rem] mx-auto my-36 border border-4 rounded-xl" controls>
+                <div className="img w-[59rem] h-[36rem] overflow-hidden rounded-3xl mx-auto my-24">
+                    <video className="w-[59rem] h-[36rem]" controls>
+                        {data ?
                         <source src={data.photo} type="video/mp4" />
+                        : null}
                     </video>
-                : null }    
+                </div>
                 <div className="mb-16">
                     <p className="text-4xl font-semibold mb-6">Description</p>
                     <div>

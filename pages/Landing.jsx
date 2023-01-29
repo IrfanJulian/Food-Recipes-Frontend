@@ -4,23 +4,33 @@ import Footer from "../components/footer"
 import Navbar from "../components/navbar"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import axios from "axios"
 // import { useRouter } from "next/router"
 
-const LandingPage = ({data}) => {
+const LandingPage = () => {
 
   const [dataRecipes, setDataRecipes] = useState()
-  const [dataPopular, setDataPopular] = useState()
-  // const [id, setId] = useState()
+  const [id, setId] = useState()
   const router = useRouter()
 
   useEffect(()=>{
-      setDataRecipes(data)
-      setDataPopular(data[0])
-      // setId(localStorage.getItem('idrecipe'))
-  }, [data])
+      const getRecipes = async() => {
+        try {
+          const data = await axios({
+            method: 'GET',
+            url: `${process.env.NEXT_PUBLIC_URL_API}/recipe`,
+            withCredentials: true
+          })
+          setDataRecipes(data.data.data)
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      getRecipes()
+  }, [])
 
   const handleMoveDetail = () => {
-    router.push(`/detailResep/${dataPopular.id}`)
+    router.push(`/detailResep/${dataRecipes.id}`)
   }
 
   return (
@@ -28,18 +38,13 @@ const LandingPage = ({data}) => {
       <Navbar />
       <div className="container flex h-full my-auto mx-auto">
         <div className="w-1/2 my-auto">
-          {/* <form onSubmit={handleSearch}> */}
             <p className="text-8xl text-blue-900 font-semibold">Discover Recipe & Delicious Food</p>
-            {/* <input placeholder="Search Restaurants or Food" className="bg-gray-200 my-16 py-6 px-12 w-full rounded-xl" />
-            <button type="submit">Search</button> */}
-            {/* <Link type="submit" href={'/'}><img src="/search.png" alt="search" className="w-[2rem] h-[2rem]" /></Link> */}
-          {/* </form> */}
         </div>
         <div className="w-1/2 my-auto">
           <img src="/content.png" alt="content" className="ml-auto w-3/4 h-3/4" />
         </div>
       </div>
-      { dataPopular ?
+      { dataRecipes ?
       <div className="container mx-auto">
         <div className="wrappertext border-l-8 border-yellow-400 py-7 pl-10">
           <p className="text-4xl font-semibold">Popular For You !</p>
@@ -49,11 +54,13 @@ const LandingPage = ({data}) => {
             <img src="/ramen.jpg" alt="content2" className="w-4/6 h-6/6" />
           </div>
           <div className="wrappercontent grid w-1/2">
+            {dataRecipes ?
             <div className="wrappertext w-1/2 my-auto">
-              <p className="text-4xl font-semibold">{dataPopular.tittle}</p>
-              <p className="text-lg text-gray-500 my-8">{dataPopular.description}</p>
+              <p className="text-4xl font-semibold">{dataRecipes[0].tittle}</p>
+              <p className="text-lg text-gray-500 my-8">{dataRecipes[0].description}</p>
               <button onClick={handleMoveDetail} className="py-4 px-12 bg-yellow-400 text-white rounded-xl">Learn More</button>
             </div>
+            : null}
           </div>
         </div>
       </div>
@@ -83,17 +90,5 @@ const LandingPage = ({data}) => {
     </div>
   )
 }
-// export async function getServerSideProps() {
-//   try {      
-//       // Fetch data from external API
-//       const res = await fetch(`http://localhost:7500/user/profile`)
-//       const dataUser = await res.json()
-      
-//       // Pass dataUser to the page via props
-//       return { props: { dataUser } }
-//   } catch (error) {
-//       console.log(error);
-//   }
-// }
 
 export default LandingPage

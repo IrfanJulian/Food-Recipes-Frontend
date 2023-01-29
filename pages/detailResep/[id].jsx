@@ -100,7 +100,7 @@ const DetailResep = () => {
         <Navbar1 />
         <div className="container mx-auto">
             { data ? 
-            <div className="wrapperr">
+            <div className="wrapperr" key={data.id}>
                 <p className="text-5xl text-blue-900 text-center font-semibold mt-44">{data.tittle}</p>
                 <div className="img w-[59rem] h-[36rem] overflow-hidden rounded-3xl mx-auto my-24">
                     <video className="w-[59rem] h-[36rem]" controls>

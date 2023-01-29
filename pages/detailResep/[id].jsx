@@ -37,6 +37,7 @@ const DetailResep = () => {
         }
         getDetail()
     }, [router.query.id])
+    // console.log(data);
 
     useEffect(()=>{
         const iduser = localStorage.getItem('id')

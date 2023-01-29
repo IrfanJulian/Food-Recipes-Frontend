@@ -29,7 +29,7 @@ const LandingPage = () => {
       }
       getRecipes()
   }, [])
-  console.log(dataRecipes);
+  // console.log(dataRecipes);
 
   // useEffect(()=>{
   //   if(id){

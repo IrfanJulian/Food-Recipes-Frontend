@@ -26,7 +26,7 @@ const LandingPage = ({data}) => {
   // }, [])
 
   const handleMoveDetail = () => {
-    router.push(`/detailResep/${dataPopular.id}`)
+    router.push(`/detailResep/${dataRecipes.id}`)
   }
 
   return (
@@ -45,7 +45,7 @@ const LandingPage = ({data}) => {
           <img src="/content.png" alt="content" className="ml-auto w-3/4 h-3/4" />
         </div>
       </div>
-      { dataPopular ?
+      { dataRecipes ?
       <div className="container mx-auto">
         <div className="wrappertext border-l-8 border-yellow-400 py-7 pl-10">
           <p className="text-4xl font-semibold">Popular For You !</p>

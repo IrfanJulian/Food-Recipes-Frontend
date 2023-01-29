@@ -1,6 +1,6 @@
 // import axios from 'axios'
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import React from 'react'
 import LandingPage from './Landing'
 
 const Home = ({data}) => {

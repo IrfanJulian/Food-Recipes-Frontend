@@ -15,8 +15,6 @@ const LandingPage = ({data}) => {
 
   useEffect(()=>{
       setDataRecipes(data)
-      // setDataPopular(data[0])
-      // setId(localStorage.getItem('idrecipe'))
   }, [data])
 
   // useEffect(()=>{

@@ -1,4 +1,5 @@
 import axios from "axios"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import Footer from "../../components/footer"
@@ -6,6 +7,19 @@ import Navbar1 from "../../components/navbar"
 // import { useRouter } from "next/router"
 
 const AddRecipe = () => {
+
+    const router = useRouter()
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+        if(!token){
+            Swal.fire(
+                'Login first',
+                'Login first',
+                'error'
+                )
+            router.push('/auth/login')
+        }
+    })
 
     useEffect(()=>{
         const idUser = localStorage.getItem('id')

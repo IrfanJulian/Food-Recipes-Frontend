@@ -10,7 +10,7 @@ const LandingPage = ({data}) => {
 
   const [dataRecipes, setDataRecipes] = useState()
   const [dataPopular, setDataPopular] = useState()
-  const [id, setId] = useState()
+  // const [id, setId] = useState()
   const router = useRouter()
 
   useEffect(()=>{
@@ -18,12 +18,6 @@ const LandingPage = ({data}) => {
       setDataPopular(data[0])
       // setId(localStorage.getItem('idrecipe'))
   }, [data])
-
-  // useEffect(()=>{
-  //   if(id){
-  //     localStorage.removeItem('idrecipe')
-  //   }
-  // }, [])
 
   const handleMoveDetail = () => {
     router.push(`/detailResep/${dataPopular.id}`)
@@ -103,22 +97,3 @@ const LandingPage = ({data}) => {
 // }
 
 export default LandingPage
-
-
-{/* <div className="container mx-auto">
-<div className="wrappertext border-l-8 border-yellow-400 py-7 pl-10">
-  <p className="text-4xl font-semibold">New Recipe</p>
-</div>
-<div className="flex">
-  <div className="wrappercontent w-1/2 py-24">
-    <img src="/content3.png" alt="content2" className="w-4/6 h-6/6" />
-  </div>
-  <div className="wrappercontent grid w-1/2">
-    <div className="wrappertext w-1/2 my-auto">
-      <p className="text-4xl font-semibold">{dataRecipes[1].tittle}</p>
-      <p className="text-lg text-gray-500 my-8">{dataRecipes[1].tittle}</p>
-      <button onClick={()=>router.push(`/detailResep/${dataRecipes[1].id}`)} className="py-4 px-12 bg-yellow-400 text-white rounded-xl">Learn More</button>
-    </div>
-  </div>
-</div>
-</div> */}

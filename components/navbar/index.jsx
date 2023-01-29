@@ -10,9 +10,18 @@ const Navbar = () => {
   const [data, setData] = useState()
 
   useEffect(()=>{
+    // const token = localStorage.getItem('token')
+    const id = localStorage.getItem('id')
     const getData = async() => {
-        try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/user/profile`, {withCredentials: true})
+      try {
+        const res = await axios({
+          method: 'GET',
+          url: `${process.env.NEXT_PUBLIC_URL_API}/user/${id}`
+          // headers: {
+          //     authorization: `Bearer ${token}`
+          // },
+          // withCredentials: true
+      })
             setData(res.data.data);
         } catch (error) {
             console.log(error);

@@ -18,6 +18,12 @@ Here is repository :  https://github.com/IrfanJulian/Food-Recipes-Frontend.git
 ### Add recipe
 ![](https://res.cloudinary.com/ddpo9zxts/image/upload/v1673857617/Recipes/Food/food_add_b2cia5.jpg)
 
+### Detail recipe
+![](https://res.cloudinary.com/ddpo9zxts/image/upload/v1674561382/video_detail_kxdl83.jpg)
+
+### Comment
+![](https://res.cloudinary.com/ddpo9zxts/image/upload/v1674561385/comment_ru8x5b.jpg)
+
 
 ## [Usage](https://foodrecipe.github.io/WebApp/) 
 

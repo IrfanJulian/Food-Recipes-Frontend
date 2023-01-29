@@ -14,14 +14,30 @@ const Profile = () => {
     const [dataRecipes, setDataRecipe] = useState([])
     const [myRecipe, setMyRecipe] = useState()
     const [img, setImg] = useState()
+    const router = useRouter()
 
     // const env = process.env.PROFILE
     // console.log(env);
 
     useEffect(()=>{
+        const token = localStorage.getItem('token')
+        if(!token){
+            Swal.fire(
+                'Login first',
+                'Login first',
+                'error'
+                )
+            router.push('/auth/login')
+        }
+    })
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+        const id = localStorage.getItem('id')
+        console.log(token);
         const getProfile = async () =>{
             try {
-                const result = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/user/profile`, { withCredentials: true })
+                const result = await axios.get(`${process.env.NEXT_PUBLIC_URL_API}/user/${id}`, { headers: { authorization: `Bearer ${token}` } }, { withCredentials: true })
                 setData(result.data.data)
                 setImg(result.data.data.photo)
             } catch (error) {
@@ -77,12 +93,16 @@ const Profile = () => {
 
         const handleUpload = async(e) => {
             e.preventDefault()
+            const token = localStorage.getItem('token')
             const formData = new FormData()
             formData.append('photo', update, update.name)
             try {
                 await axios({
                     method: 'PUT',
-                    url: `http://localhost:7500/user/${data.id}`,
+                    url: `${process.env.NEXT_PUBLIC_URL_API}/user/${data.id}`,
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    },
                     data: formData,
                     withCredentials: true
                 })
@@ -106,15 +126,14 @@ const Profile = () => {
                 <img src={img} alt="icon" className="w-44 h-44" /> : <img src='/iconuser2.png' alt="icon" className="w-44 h-44" /> 
                 }
             </div>
-                {/* <form onSubmit={handleUpload} className="flex justify-center mt-5"> */}
-                    <label htmlFor="changephoto" className="text-center mx-auto my-10">
-                        <span className="text-xl text-gray-700"><img src="/edit-picture.png" alt="edit" /></span>
-                        <input id="changephoto" name="photo" onChange={handlePhoto} type="file" className="hidden" />
-                    </label>
-                    <button type="submit" onClick={handleUpload} className="border-yellow-400 text-xl font-semibold text-white py-3 px-5 rounded-xl bg-yellow-400 w-max mx-auto">Change</button>
-                {/* </form> */}
+                <label htmlFor="changephoto" className="text-center mx-auto my-10">
+                    <span className="text-xl text-gray-700"><img src="/edit-picture.png" alt="edit" /></span>
+                    <input id="changephoto" name="photo" onChange={handlePhoto} type="file" className="hidden" />
+                </label>
+                <button type="submit" onClick={handleUpload} className="border-yellow-400 text-xl font-semibold text-white py-3 px-5 rounded-xl bg-yellow-400 w-max mx-auto">Change</button>
+            {data ?
             <p className="text-3xl font-semibold text-center mt-10">{data.name}</p>
-            {/* <p className="text-3xl font-semibold text-center mt-10">VALUE ENV = {process.env.URL_PROFILE}</p> */}
+            : null }
         </div>
         <div className="container mx-auto">
             <div className="flex">
